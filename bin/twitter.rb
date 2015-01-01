@@ -9,8 +9,8 @@ client = Twitter::REST::Client.new do |config|
 end
 
 client.search(ENV['QUERY'], lang: "en").take(5).each do |tweet|
-  if !tweet.favorited? && !client.friendship?(client.user, tweet.user)
-    client.fav(tweet)
+  if !client.friendship?(client.user, tweet.user)
+    client.fav!(tweet)
     puts "favourited: #{tweet.text}"
   else
     puts "skipped: #{tweet.text}"
