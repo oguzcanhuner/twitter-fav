@@ -10,10 +10,12 @@ end
 
 client.search(ENV['QUERY'], lang: "en").take(5).each do |tweet|
   if !client.friendship?(client.user, tweet.user)
-    client.fav!(tweet)
-    puts "favourited: #{tweet.text}"
-  else
-    puts "skipped: #{tweet.text}"
+    begin
+      client.fav!(tweet)
+      puts "favourited: #{tweet.text}"
+    rescue Twitter::Error::AlreadyFavorited
+      puts "skipped: #{tweet.text}"
+    end
   end
   sleep(8)
 end
